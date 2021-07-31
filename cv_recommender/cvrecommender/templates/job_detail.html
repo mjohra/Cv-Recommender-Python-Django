@@ -1,0 +1,396 @@
+{% load static %}
+<!DOCTYPE html>
+<html class="no-js" lang="zxx">
+<head>
+<meta name="author" content="">
+<meta name="description" content="">
+<meta http-equiv="Content-Type"content="text/html;charset=UTF-8"/>
+<meta name="viewport"content="width=device-width, initial-scale=1.0">
+<title>:: CV Bachai ::</title>
+
+<!-- Favicon Icon -->
+<link rel="shortcut icon" href="{% static 'assets/img/favicon.png' %}" />
+
+<!-- CSS -->
+<link href="{% static 'assets/plugins/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+<link href="{% static 'assets/plugins/icons/css/icons.css' %}" rel="stylesheet">
+<link href="{% static 'assets/plugins/animate/animate.css' %}" rel="stylesheet">
+<link href="{% static 'assets/plugins/aos-master/aos.css' %}" rel="stylesheet">
+<link href="{% static 'assets/plugins/bootstrap/css/bootsnav.css' %}" rel="stylesheet">
+<link href="{% static 'assets/css/style.css' %}" rel="stylesheet">
+<link href="{% static 'assets/css/responsive.css' %}" rel="stylesheet">
+<!-- Google Fonts -->
+<link href="https://fonts.googleapis.com/css?family=Montserrat:300,400,500,600,700&display=swap" rel="stylesheet"> 
+<link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600&display=swap" rel="stylesheet"> 
+</head>
+<body class="utf_skin_area">
+<div class="page_preloader"></div>
+<!-- ======================= Start Navigation ===================== -->
+<nav class="navbar navbar-default navbar-mobile navbar-fixed white bootsnav">
+  <div class="container"> 
+    <div class="navbar-header">
+      <a class="navbar-brand" href="{% url 'home' %}"> <img src="{% static 'assets/img/logo-light.png' %}" class="logo logo-display" alt=""> <img src="{% static 'assets/img/logo.png' %}" class="logo logo-scrolled" alt=""> </a>
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-menu"> <i class="fa fa-bars"></i> </button> 
+	  </div>
+    <div class="collapse navbar-collapse" id="navbar-menu">
+      <ul class="nav navbar-nav navbar-left" data-in="fadeInDown" data-out="fadeOutUp">
+        <li> <a href="{% url 'home' %}">Home</a> </li>
+        <li class="active"> <a href="{% url 'allPublishedJobs' %}">Jobs</a> </li>
+        <li class="dropdown"> <a href="" class="dropdown-toggle" data-toggle="dropdown">Category</a>
+          <ul class="dropdown-menu animated fadeOutUp">
+            {% for key, value in sorted_cat_dict.items %}
+              <li><a href="{% url 'jobCategory' key %}">{{ key }}</a></li>
+            {% empty %}
+              <li>Sorry, NO Category found!!!</li>
+            {% endfor %}
+          </ul>
+        </li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        {% if request.user.is_authenticated %}
+          <li class="dropdown sign-up">
+            <!-- ================ Navbar profile photo ======================= -->
+              {% if request.user.applicant.image %}
+                <a class="dropdown-toggle btn-signup red-btn" data-toggle="dropdown" href=""> 
+                  <img src="{{ request.user.applicant.image.url }}" class="img-responsive img-circle" alt="">
+                  {{ request.user }} 
+                </a>
+              {% elif request.user.recruiter.image %}
+                <a class="dropdown-toggle btn-signup red-btn" data-toggle="dropdown" href=""> 
+                  <img src="{{ request.user.recruiter.image.url }}" class="img-responsive img-circle" alt="">
+                  {{ request.user }} 
+                </a>
+              {% else %}
+                <a class="dropdown-toggle btn-signup red-btn" data-toggle="dropdown" href=""> 
+                  <img src="{% static 'assets/img/user-profile.png' %}" class="img-responsive img-circle" alt="">
+                  {{ request.user }} 
+                </a>
+              {% endif %}
+              <!-- ================ End Navbar profile photo ======================= -->
+              <ul class="dropdown-menu animated fadeOutUp">
+                {% if request.user.applicant %}
+                  <li><a href="{% url 'applicantdashboard' %}">Dashboard</a></li>
+                  <li><a href="{% url 'logout' %}">Log Out</a></li>
+                {% elif request.user.recruiter %}
+                  <li><a href="{% url 'recruiterdashboard' %}">Dashboard</a></li>
+                  <li><a href="{% url 'logout' %}">Log Out</a></li>
+                {% endif %}  
+              </ul>
+            </li>
+        {% else %}
+          <li class="br-right"><a class="btn-signup red-btn" href="{% url 'login' %}"><i class="login-icon ti-user"></i>Login</a></li>
+          <li class="sign-up"><a class="btn-signup red-btn" href="{% url 'register' %}"><span class="ti-briefcase"></span>Register</a></li>
+        {% endif %}
+      </ul>
+    </div>
+  </div>
+</nav>
+<!-- ======================= End Navigation ===================== --> 
+
+<!-- ======================= Page Title ===================== -->
+<div class="page-title">
+  <div class="container">
+    <div class="page-caption">
+      <h2>Job Detail</h2>
+      <p><a href="{% url 'home' %}" title="Home">Home</a> <i class="ti-angle-double-right"></i>
+      <a href="{% url 'allPublishedJobs' %}"> Jobs</a> <i class="ti-angle-double-right"></i> Job Detail</p>
+    </div>
+  </div>
+</div>
+<!-- ======================= End Page Title ===================== --> 
+
+<!-- ====================== Start Job Detail ================ -->
+<section class="padd-top-80 padd-bot-60">
+  <div class="container"> 
+    <!-- row -->
+    <div class="row">
+      <div class="col-md-8 col-sm-7">
+        <div class="detail-wrapper">
+          <div class="detail-wrapper-body">
+            <div class="row">
+              {% if job.logo %}
+                <div class="col-md-4 text-center user_profile_img"> <img src="{{ job.logo.url }}" class="width-100"  alt="Company Logo"/>
+              {% else %}
+                <div class="col-md-4 text-center user_profile_img"> <img src="{% static 'assets/img/company_logo_1.png' %}" class="width-100"  alt="Company Logo"/>
+              {% endif %}
+              <h4 class="meg-0">{{ job.title }}</h4>
+              <div class="text-center">
+                {% if applied %}
+                  <button class="btn btn-success" disabled>Applied</button>
+                {% else %}
+                  <a href="{% url 'apply' job.slug %}" class="btn-job theme-btn job-apply">Apply Now</a>
+                {% endif %}
+              </div>
+            </div>
+            <div class="col-md-8 user_job_detail">
+              <div class="col-sm-12 mrg-bot-10"> <i class="ti-announcement padd-r-10"></i><span class="full-type">{{ job.job_type }}</span> </div>
+              <div class="col-sm-12 mrg-bot-10"> <i class="ti-wallet padd-r-10"></i>{{ job.salary }} Bdt/Month </div>
+              <div class="col-sm-12 mrg-bot-10"> <i class="ti-briefcase padd-r-10"></i>{{ job.vacancy }} Open Position{{ job.vacancy|pluralize }}</div>
+              <div class="col-sm-12 mrg-bot-10"> <i class="ti-shield padd-r-10"></i><span class="full-type"> {{ job.experience }} Year{{ job.experience|pluralize }} Experience Required </span></div>
+              <div class="col-sm-12 mrg-bot-10"> <i class="ti-calendar padd-r-10"></i>Starting Date:  {{ job.starting_date }}</div>
+              <div class="col-sm-12 mrg-bot-10"> <i class="ti-calendar padd-r-10"></i><span class="cl-danger">Deadline:  {{ job.deadline }}</span></div>
+          </div>
+			  </div>
+      </div>
+    </div>
+        <div class="detail-wrapper">
+          <div class="detail-wrapper-header">
+            <h4>Skills Required</h4>
+          </div>
+          <div class="detail-wrapper-body">
+            {% for skill in skill_req %}
+            <span class="skill-tag">{{ skill }}</span>
+            {% endfor %}
+          </div>
+        </div>
+
+        {% comment %} if any bonus skill is required {% endcomment %}
+        {% if job.skill_bonus %}
+          <div class="detail-wrapper">
+          <div class="detail-wrapper-header">
+            <h4>Skills Good To Have</h4>
+          </div>
+          <div class="detail-wrapper-body">
+            {% for skill in skill_bonus %}
+            <span class="skill-tag">{{ skill }}</span>
+            {% endfor %}
+          </div>
+        </div>
+        {% endif %}
+
+		    <div class="detail-wrapper">
+          <div class="detail-wrapper-header">
+            <h4>Minimum Education</h4>
+          </div>
+          <div class="detail-wrapper-body">
+            <h5>Degree: {{ job.min_education }}</h5>
+            <h5>Results: {{ job.cgpa }}</h5>
+          </div>
+        </div>
+        <div class="detail-wrapper">
+          <div class="detail-wrapper-header">
+            <h4>Responsibility</h4>
+          </div>
+          <div class="detail-wrapper-body">
+            <ul class="detail-list">
+              {% for res in responsibility %}
+                <li>{{ res }}.</li>
+              {% endfor %}
+            </ul>
+          </div>
+        </div>
+        <div class="detail-wrapper">
+          <div class="detail-wrapper-header">
+            <h4>Description</h4>
+          </div>
+          <div class="detail-wrapper-body">
+            <ul class="detail-list">
+              {% for des in description %}
+                <li>{{ des }}.</li>
+              {% endfor %}
+            </ul>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Basic Info of job -->
+      <div class="col-md-4 col-sm-5">
+        <div class="sidebar"> 
+          <!-- Start: Job Overview -->
+          <div class="widget-boxed">
+            <div class="widget-boxed-header">
+              <h4><i class="icon-streetsign padd-r-10"></i>Basic Information</h4>
+            </div>
+            <div class="widget-boxed-body">
+              <div class="side-list no-border">
+                <ul>
+                  <li><i class="ti-user padd-r-10"></i>{{ job.company_name }}</li>
+                  <li><i class="ti-mobile padd-r-10"></i>{{ job.phone }}</li>
+                  <li><i class="ti-email padd-r-10"></i>{{ job.email }}</li>
+                  <li><i class="ti-world padd-r-10"></i>{{ job.company_website }}</li>
+                  <li><i class="ti-location-pin padd-r-10"></i>{{ job.address }}</li>
+                  <li><i class="ti-location-pin padd-r-10"></i>{{ job.division }}</li>
+                  <li><i class="ti-calendar padd-r-10"></i>Published On: {{ job.publish }}</li>
+                </ul>                
+              </div>
+            </div>
+          </div>
+
+          <!-- Start: Opening hour -->
+          <div class="widget-boxed">
+            <div class="widget-boxed-header">
+              <h4><i class="ti-time padd-r-10"></i>Opening Hours</h4>
+            </div>
+            <div class="widget-boxed-body">
+              <div class="side-list">
+                <ul>
+                  <li>Monday <span>9 AM - 5 PM</span></li>
+                  <li>Tuesday <span>9 AM - 5 PM</span></li>
+                  <li>Wednesday <span>9 AM - 5 PM</span></li>
+                  <li>Thursday <span>9 AM - 5 PM</span></li>
+                  <li>Friday <span>9 AM - 5 PM</span></li>
+                  <li>Saturday <span>9 AM - 3 PM</span></li>
+                  <li>Sunday <span>Closed</span></li>
+                </ul>
+              </div>
+            </div>
+          </div>
+		  
+		  <!-- Start: Location -->
+          <div class="widget-boxed">
+            <div class="widget-boxed-header">
+              <h4><i class="ti-location-pin padd-r-10"></i>Location</h4>
+            </div>
+            <div class="widget-boxed-body">
+              <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3430.566512514854!2d76.8192921147794!3d30.702470481647698!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x390fecca1d6c0001%3A0xe4953728a502a8e2!2sChandigarh!5e0!3m2!1sen!2sin!4v1520136168627" width="100%" height="360" frameborder="0" style="border:0" allowfullscreen></iframe>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- ====================== End Job Detail  ================ --> 
+    
+
+    <!-- Similar Jobs show --> 
+    <div class="row">
+      <div class="col-md-12">
+        <h3 class="mrg-bot-20">Similar Jobs 
+          <span class="badge badge-info bg-warning">Recent</span>
+        </h3>
+        <hr>
+      </div>
+    </div>
+    <div class="row"> 
+      <!-- Single Job -->
+      {% for related_job in related_jobs %}
+        <div class="col-md-3 col-sm-6">
+          <div class="utf_grid_job_widget_area"> <span class="job-type full-type">{{ related_job.job_type }}</span>
+            <div class="u-content">
+              {% if related_job.logo %}
+                  <div class="avatar box-80"><img class="img-responsive" src="{{ related_job.logo.url }}" alt="Company Logo"></div>
+                {% else %}
+                <div class="avatar box-80"><img class="img-responsive" src="{% static 'assets/img/company_logo_1.png' %}" alt="Company Logo"></div>
+              {% endif %}
+              <h5><a href="{{ related_job.get_absolute_url }}">{{ related_job.title }}</a></h5>
+              <p class="text-muted">Experience: {{ related_job.experience }} years</p>
+            </div>
+            <div class="utf_apply_job_btn_item">
+              <a href="{{ related_job.get_absolute_url }}" class="btn job-browse-btn btn-radius br-light">View Details</a>
+            </div>
+          </div>
+        </div>
+      {% empty %}
+        <h2>No related Job Found of this Category</h2>
+      {% endfor %}
+    </div>
+    <!-- End Similar Jobs show --> 
+  </div>
+</section>
+
+
+<section class="newsletter theme-bg" style="background-image:url(assets/img/bg-new.png)">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-8 col-md-offset-2">
+        <div class="heading light">
+          <h2>Subscribe Our Newsletter!</h2>
+          <p>Lorem Ipsum is simply dummy text printing and type setting industry Lorem Ipsum been industry standard dummy text ever since when unknown printer took a galley.</p>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-6 col-sm-6 col-md-offset-3 col-sm-offset-3">
+        <div class="newsletter-box text-center">
+          <div class="input-group"> <span class="input-group-addon"><span class="ti-email theme-cl"></span></span>
+            <input type="text" class="form-control" placeholder="Enter your Email...">
+          </div>
+          <button type="button" class="btn theme-btn btn-radius btn-m">Subscribe</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= footer start ========================= -->
+<footer class="footer">
+  <div class="container"> 
+    <div class="row">
+      <div class="col-md-4 col-sm-4">
+        <a href="{% url 'home' %}"><img class="footer-logo" src="{% static 'assets/img/logo.png' %}" alt=""></a>
+        <p>Lorem Ipsum is simply dummy text of printing and type setting industry. Lorem Ipsum been industry standard dummy text ever since.</p>
+        <!-- Social Box -->
+        <div class="f-social-box">
+          <ul>
+            <li><a href="#"><i class="fa fa-facebook facebook-cl"></i></a></li>
+            <li><a href="#"><i class="fa fa-google google-plus-cl"></i></a></li>
+            <li><a href="#"><i class="fa fa-twitter twitter-cl"></i></a></li>
+            <li><a href="#"><i class="fa fa-instagram instagram-cl"></i></a></li>
+          </ul>
+        </div>        
+      </div>	
+      <div class="col-md-8 col-sm-8">
+        <div class="row"> 
+          <div class="col-md-4 col-sm-4 col-xs-6">
+            <h4>Job Category</h4>
+            <ul>
+              {% for key, value in sliced_dict.items %}
+              <li><a href="{% url 'jobCategory' key %}"><i class="fa fa-angle-double-right"></i> {{ key }}</a></li>
+            {% empty %}
+              <li>Sorry, NO Category found!!!</li>
+            {% endfor %}
+            </ul>
+          </div>
+          <div class="col-md-4 col-sm-4 col-xs-6">
+            <h4>Resources</h4>
+            <ul>
+              <li><a href="#"><i class="fa fa-angle-double-right"></i> My Account</a></li>
+              <li><a href="#"><i class="fa fa-angle-double-right"></i> Support</a></li>
+              <li><a href="#"><i class="fa fa-angle-double-right"></i> How It Works</a></li>
+              <li><a href="#"><i class="fa fa-angle-double-right"></i> Underwriting</a></li>
+              <li><a href="#"><i class="fa fa-angle-double-right"></i> Employers</a></li>
+            </ul>
+          </div>
+		      <div class="col-md-4 col-sm-4 col-xs-6">
+            <h4>Quick Links</h4>
+            <ul>
+              <li><a href="{% url 'allPublishedJobs' %}"><i class="fa fa-angle-double-right"></i> Jobs Listing</a></li>
+              <li><a href="#"><i class="fa fa-angle-double-right"></i> About Us</a></li>
+              <li><a href="#"><i class="fa fa-angle-double-right"></i> Contact Us</a></li>
+              <li><a href="#"><i class="fa fa-angle-double-right"></i> Privacy Policy</a></li>
+              <li><a href="#"><i class="fa fa-angle-double-right"></i> Term & Condition</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>      
+    </div>
+    <div class="row">
+      <div class="col-md-12">
+        <div class="copyright text-center">
+          <p>Copyright © 2021 All Rights Reserved.</p>		  
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+<div><a href="#" class="scrollup">Scroll</a></div>
+
+<!-- Jquery js--> 
+<script src="{% static 'assets/js/jquery.min.js' %}"></script> 
+<script src="{% static 'assets/plugins/bootstrap/js/bootstrap.min.js' %}"></script> 
+<script src="{% static 'assets/plugins/bootstrap/js/bootsnav.js' %}"></script> 
+<script src="{% static 'assets/js/viewportchecker.js' %}"></script> 
+<script src="{% static 'assets/js/slick.js' %}"></script> 
+<script src="{% static 'assets/plugins/bootstrap/js/bootstrap-wysihtml5.js' %}"></script> 
+<script src="{% static 'assets/plugins/aos-master/aos.js' %}"></script> 
+<script src="{% static 'assets/plugins/nice-select/js/jquery.nice-select.min.js' %}"></script> 
+<script src="{% static 'assets/js/custom.js' %}"></script> 
+<script>
+	$(window).load(function() {
+	  $(".page_preloader").fadeOut("slow");;
+	});
+	AOS.init();
+</script>
+</body>
+</html>

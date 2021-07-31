@@ -1,0 +1,301 @@
+{% load static %}
+<!DOCTYPE html>
+<html class="no-js" lang="zxx">
+
+  <head>
+    <meta name="author" content="">
+    <meta name="description" content="">
+    <meta http-equiv="Content-Type" content="text/html;charset=UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>:: CV Bachai ::</title>
+
+    <!-- Favicon Icon -->
+    <link href="{% static 'assets/img/favicon.png' %}" rel="shortcut icon" />
+
+    <!-- CSS -->
+    <link href="{% static 'assets/plugins/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+    <link href="{% static 'assets/plugins/icons/css/icons.css' %}" rel="stylesheet">
+    <link href="{% static 'assets/plugins/animate/animate.css' %}" rel="stylesheet">
+    <link href="{% static 'assets/plugins/aos-master/aos.css' %}" rel="stylesheet">
+    <link href="{% static 'assets/plugins/bootstrap/css/bootsnav.css' %}" rel="stylesheet">
+    <link href="{% static 'assets/css/style.css' %}" rel="stylesheet">
+    <link href="{% static 'assets/css/responsive.css' %}" rel="stylesheet">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:300,400,500,600,700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600&display=swap" rel="stylesheet">
+  </head>
+
+  <body class="utf_skin_area">
+    <div class="page_preloader"></div>
+    <!-- ======================= Start Navigation ===================== -->
+    <nav class="navbar navbar-default navbar-mobile navbar-fixed light bootsnav">
+      <div class="container"> 
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-menu"> <i class="fa fa-bars"></i> </button>
+          <a class="navbar-brand" href="{% url 'home' %}"> <img src="{% static 'assets/img/logo.png' %}" class="logo logo-display" alt=""> 
+            <img src="{% static 'assets/img/logo.png' %}" class="logo logo-scrolled" alt="">
+          </a> 
+        </div>
+        <div class="collapse navbar-collapse" id="navbar-menu">
+          <ul class="nav navbar-nav navbar-left" data-in="fadeInDown" data-out="fadeOutUp">
+            <li class="selected"> <a href="{% url 'recruiterdashboard' %}">Dashboard</a> </li>
+            <li> <a href="{% url 'postjob' %}">Post Job</a> </li>
+            <li class="dropdown"> <a href="#" class="dropdown-toggle" data-toggle="dropdown">View Jobs</a>
+              <ul class="dropdown-menu animated fadeOutUp">
+                <li><a href="{% url 'currentOpeningJobs' %}">Current Openning Jobs</a></li>
+                <li><a href="{% url 'allJobs' %}">All jobs </a></li>
+              </ul>
+            </li>
+          </ul>
+          <ul class="nav navbar-nav navbar-right">
+            <li class="dropdown sign-up">
+            <!-- ================ Navbar profile photo ======================= -->
+              {% if request.user.recruiter.image %}
+                <a class="dropdown-toggle btn-signup red-btn" data-toggle="dropdown" href=""> 
+                  <img src="{{ request.user.recruiter.image.url }}" class="img-responsive img-circle" alt="">
+                  {{ request.user }} 
+                </a>
+              {% else %}
+                <a class="dropdown-toggle btn-signup red-btn" data-toggle="dropdown" href=""> 
+                  <img src="{% static 'assets/img/user-profile.png' %}" class="img-responsive img-circle" alt="">
+                  {{ request.user }} 
+                </a>
+              {% endif %}
+              <!-- ================ End Navbar profile photo ======================= -->
+              <ul class="dropdown-menu animated fadeOutUp">
+                <li><a href="{% url 'recruiterdashboard' %}">Dashboard</a></li>
+                <li><a href="{% url 'logout' %}">Log Out</a></li>
+              </ul>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+    <!-- ======================= End Navigation ===================== -->
+
+    <!-- ======================= Page Title ===================== -->
+    <div class="page-title">
+      <div class="container">
+        <div class="page-caption">
+          <h2>Manage Jobs</h2>
+          <p><a href="#" title="Home">Home</a> <i class="ti-angle-double-right"></i> Manage Jobs</p>
+        </div>
+      </div>
+    </div>
+    <!-- ======================= End Page Title ===================== -->
+
+    <!-- ======================== Manage Job ========================= -->
+    <section class="utf_manage_jobs_area padd-top-50 padd-bot-50">
+      <div class="container padd-top-10 padd-bot-10">
+        {% for message in messages %}
+        <div class="col-6 text-center alert alert-warning alert-dismissible show" role="alert">
+          <strong>{{message}}</strong>
+          <button type="button" class="close" data-dismiss="alert">
+          <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+      {% endfor %}
+      </div>
+      
+      <div class="container padd-bot-50">
+        <h4 class="text-center">Applicant List of: <span class="text-white bg-info font-italic">{{ myjob.title }}</span></h4> 
+      </div>
+      <div class="container">
+        <div class="table-responsive">
+          <table class="table table-lg table-hover">
+            <thead>
+              <tr>
+                <th class="text-center">Name</th>
+                <th class="text-center">Email</th>
+                <th class="text-center">Score</th>
+                <th class="text-center">Relevant Experience</th>
+                <th class="text-center">Total Experience</th>
+                <th class="text-center">Education</th>
+                <th class="text-center">CGPA</th>
+                <th class="text-center">CV</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for candidate in candidates %}
+                <tr>
+                  <td class="text-center">{{ candidate.first_name }} {{ candidate.last_name }}</td>
+                  <td class="text-center">{{ candidate.email }}</td>
+                  <td class="text-center">{{ candidate.score }}</td>
+                  <td class="text-center">{{ candidate.related_experience_application }}</td>
+                  <td class="text-center">{{ candidate.total_experience_application }}</td>
+                  <td class="text-center">{{ candidate.education_application }}</td>
+                  <td class="text-center">{{ candidate.cgpa_application }}</td>
+                  <td class="text-center">
+                    <button type="button" class="btn btn-info">
+                        <a href="{{ candidate.cv_application.url }}"><i class="fa fa-download"></i> CV</a>
+                    </button>
+                  </td>
+                </tr>
+              {% empty %}
+                <td colspan="8" class="text-center">No Application has been submitted yet</td>
+              {% endfor %}
+            </tbody>
+          </table>
+          
+          {% if total_candidates > 0 and mail_sent == False %}
+            <button type="button" class="btn btn-primary btn-lg btn-block">
+              <a href="{% url 'sendInvitation' myjob.slug %}"><span class="text-white">Invite First 15</span></a>
+            </button>
+          {% elif mail_sent == True %}
+            <button type="button" class="btn btn-primary btn-lg btn-block" disabled>Invitation Done</button>
+          {% else %}
+            <button type="button" class="btn btn-primary btn-lg btn-block" disabled>Invite First 15</button>
+          {% endif %}
+          
+          <!-- ======================= Pagination ===================== -->
+          <div class="utf_flexbox_area padd-bot-10">
+            <ul class="pagination">
+              {% if candidates.has_previous %}
+                <li class="page-item"> <a class="page-link" href="?page=1" aria-label="Previous">
+                  <span aria-hidden="true"><i class="fa fa-angle-double-left"></i></span> </a> 
+                </li>
+                <li class="page-item"> <a class="page-link" href="?page={{ candidates.previous_page_number }}" aria-label="Previous">
+                  <span aria-hidden="true"><i class="fa fa-angle-left"></i></span> </a> 
+                </li>
+              {% else %}
+                <li class="page-item"> <a class="page-link" href="?page=1" aria-label="Previous">
+                  <span aria-hidden="true"><i class="fa fa-angle-double-left"></i></span> </a> 
+                </li>
+                <li class="page-item"> <a class="page-link" href="?page=1" aria-label="Previous">
+                  <span aria-hidden="true"><i class="fa fa-angle-left"></i></span> </a> 
+                </li>
+              {% endif %}
+
+              {% for job in candidates.paginator.page_range %}
+                {% if candidates.number == job %}
+                  <li class="page-item active"><a class="page-link" href="?page={{ job }}">{{ job }}</a> </li>
+                {% elif job > candidates.number|add:'-2' and job < candidates.number|add:'2' %}
+                  <li class="page-item"><a class="page-link" href="?page={{ job }}">{{ job }}</a> </li> 
+                {% endif %}
+              {% endfor %}
+
+              {% if candidates.has_next %}
+                <li class="page-item"> <a class="page-link" href="?page={{ candidates.next_page_number }}" aria-label="Previous">
+                  <span aria-hidden="true"><i class="fa fa-angle-right"></i></span> </a> 
+                </li>
+                <li class="page-item"> <a class="page-link" href="?page={{ candidates.paginator.num_pages }}" aria-label="Previous">
+                  <span aria-hidden="true"><i class="fa fa-angle-double-right"></i></span> </a> 
+                </li>
+              {% else %}
+                <li class="page-item"> <a class="page-link" href="?page={{ candidates.paginator.num_pages }}" aria-label="Previous">
+                  <span aria-hidden="true"><i class="fa fa-angle-right"></i></span> </a> 
+                </li>
+                <li class="page-item"> <a class="page-link" href="?page={{ candidates.paginator.num_pages }}" aria-label="Previous">
+                  <span aria-hidden="true"><i class="fa fa-angle-double-right"></i></span> </a> 
+                </li>
+              {% endif %}
+            </ul>
+          </div>
+    <!-- ====================== End pagination ================ -->
+
+        </div>
+      </div>
+    </section>
+
+
+
+    <!-- ================= footer start ========================= -->
+    <footer class="footer">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-3 col-sm-4">
+            <a href="index.html"><img class="footer-logo" src="assets/img/logo.png" alt=""></a>
+            <p>Lorem Ipsum is simply dummy text of printing and type setting industry. Lorem Ipsum been industry
+              standard dummy text ever since.</p>
+            <!-- Social Box -->
+            <div class="f-social-box">
+              <ul>
+                <li><a href="#"><i class="fa fa-facebook facebook-cl"></i></a></li>
+                <li><a href="#"><i class="fa fa-google google-plus-cl"></i></a></li>
+                <li><a href="#"><i class="fa fa-twitter twitter-cl"></i></a></li>
+                <li><a href="#"><i class="fa fa-instagram instagram-cl"></i></a></li>
+              </ul>
+            </div>
+          </div>
+          <div class="col-md-9 col-sm-8">
+            <div class="row">
+              <div class="col-md-3 col-sm-6">
+                <h4>Job Categories</h4>
+                <ul>
+                  <li><a href="#"><i class="fa fa-angle-double-right"></i> Work from Home</a></li>
+                  <li><a href="#"><i class="fa fa-angle-double-right"></i> Internship Job</a></li>
+                  <li><a href="#"><i class="fa fa-angle-double-right"></i> Freelancer Job</a></li>
+                  <li><a href="#"><i class="fa fa-angle-double-right"></i> Part Time Job</a></li>
+                  <li><a href="#"><i class="fa fa-angle-double-right"></i> Full Time Job</a></li>
+                </ul>
+              </div>
+              <div class="col-md-3 col-sm-6">
+                <h4>Job Type</h4>
+                <ul>
+                  <li><a href="#"><i class="fa fa-angle-double-right"></i> Create Account</a></li>
+                  <li><a href="#"><i class="fa fa-angle-double-right"></i> Career Counseling</a></li>
+                  <li><a href="#"><i class="fa fa-angle-double-right"></i> My Oficiona</a></li>
+                  <li><a href="#"><i class="fa fa-angle-double-right"></i> FAQ</a></li>
+                  <li><a href="#"><i class="fa fa-angle-double-right"></i> Report a Problem</a></li>
+                </ul>
+              </div>
+              <div class="col-md-3 col-sm-6">
+                <h4>Resources</h4>
+                <ul>
+                  <li><a href="#"><i class="fa fa-angle-double-right"></i> My Account</a></li>
+                  <li><a href="#"><i class="fa fa-angle-double-right"></i> Support</a></li>
+                  <li><a href="#"><i class="fa fa-angle-double-right"></i> How It Works</a></li>
+                  <li><a href="#"><i class="fa fa-angle-double-right"></i> Underwriting</a></li>
+                  <li><a href="#"><i class="fa fa-angle-double-right"></i> Employers</a></li>
+                </ul>
+              </div>
+              <div class="col-md-3 col-sm-6">
+                <h4>Quick Links</h4>
+                <ul>
+                  <li><a href="#"><i class="fa fa-angle-double-right"></i> Jobs Listing</a></li>
+                  <li><a href="#"><i class="fa fa-angle-double-right"></i> About Us</a></li>
+                  <li><a href="#"><i class="fa fa-angle-double-right"></i> Contact Us</a></li>
+                  <li><a href="#"><i class="fa fa-angle-double-right"></i> Privacy Policy</a></li>
+                  <li><a href="#"><i class="fa fa-angle-double-right"></i> Term & Condition</a></li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-12">
+            <div class="copyright text-center">
+              <p>Copyright © 2021 All Rights Reserved.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </footer>
+
+    <div><a href="#" class="scrollup">Scroll</a></div>
+
+    <!-- Jquery js-->
+    <script src="{% static 'assets/js/jquery.min.js' %}"></script>
+    <script src="{% static 'assets/plugins/bootstrap/js/bootstrap.min.js' %}"></script>
+    <script src="{% static 'assets/plugins/bootstrap/js/bootsnav.js' %}"></script>
+    <script src="{% static 'assets/js/viewportchecker.js' %}"></script>
+    <script src="{% static 'assets/js/slick.js' %}"></script>
+    <script src="{% static 'assets/plugins/bootstrap/js/wysihtml5-0.3.0.js' %}"></script>
+    <script src="{% static 'assets/plugins/bootstrap/js/bootstrap-wysihtml5.js' %}"></script>
+    <script src="{% static 'assets/plugins/aos-master/aos.js' %}"></script>
+    <script src="{% static '' %}assets/plugins/nice-select/js/jquery.nice-select.min.js"></script>
+    <script src="{% static 'assets/js/custom.js' %}"></script>
+    <script>
+      $(window).load(function () {
+        $(".page_preloader").fadeOut("slow");;
+      });
+      AOS.init();
+    </script>
+    <script>
+      $(document).ready(function () {
+        $('[data-toggle="tooltip"]').tooltip();
+      });
+    </script>
+  </body>
+
+</html>

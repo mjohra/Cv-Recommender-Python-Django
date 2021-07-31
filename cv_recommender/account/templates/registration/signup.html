@@ -1,0 +1,196 @@
+{% load static %}
+<!DOCTYPE html>
+<html class="no-js" lang="zxx">
+<head>
+<meta name="author" content="">
+<meta name="description" content="">
+<meta http-equiv="Content-Type"content="text/html;charset=UTF-8"/>
+<meta name="viewport"content="width=device-width, initial-scale=1.0">
+<title>:: CV Bachai ::</title>
+
+<!-- Favicon Icon -->
+<link rel="shortcut icon" href="{% static 'assets/img/favicon.png' %}" />
+
+<!-- CSS -->
+<link rel="stylesheet" href="{% static 'assets/plugins/bootstrap/css/bootstrap.min.css' %}">
+<link href="{% static 'assets/plugins/bootstrap/css/bootsnav.css' %}" rel="stylesheet">
+<link href="{% static 'assets/plugins/icons/css/icons.css' %}" rel="stylesheet">
+<link href="assets/plugins/bootstrap/css/bootstrap-wysihtml5.css" rel="stylesheet" type="text/css">
+<link href="{% static 'assets/plugins/animate/animate.css' %}" rel="stylesheet">
+<link href="{% static 'assets/plugins/nice-select/css/nice-select.css' %}" rel="stylesheet">
+<link href="{% static 'assets/plugins/date-dropper/datedropper.css' %}" rel="stylesheet">
+<link href="{% static 'assets/plugins/aos-master/aos.css' %}" rel="stylesheet">
+<link href="{% static 'assets/css/style.css' %}" rel="stylesheet">
+<link href="{% static 'assets/css/responsive.css' %}" rel="stylesheet">
+<!-- Google Fonts -->
+<link href="https://fonts.googleapis.com/css?family=Montserrat:300,400,500,600,700&display=swap" rel="stylesheet"> 
+<link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600&display=swap" rel="stylesheet"> 
+</head>
+<body class="utf_skin_area">
+<div class="page_preloader"></div>
+
+<!-- ======================= Start Navigation ===================== -->
+<nav class="navbar navbar-default navbar-mobile navbar-fixed light bootsnav">
+  <div class="container">     
+    <div class="navbar-header">
+      <a class="navbar-brand" href="{% url 'home' %}"> <img src="{% static 'assets/img/logo-light.png' %}" class="logo logo-display" alt=""> <img src="{% static 'assets/img/logo.png' %}" class="logo logo-scrolled" alt=""> </a>
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-menu"> <i class="fa fa-bars"></i> </button> 
+	  </div>    
+    <div class="collapse navbar-collapse" id="navbar-menu">
+      <ul class="nav navbar-nav navbar-right"> 
+        <li class="br-right"><a class="btn-signup red-btn" href="{% url 'login' %}"><i class="login-icon ti-user"></i>Login</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+<!-- ======================= End Navigation ===================== --> 
+
+<!-- ======================= Start Page Title ===================== -->
+<div class="page-title">
+  <div class="container">
+    <div class="page-caption">
+      <h2>Create an Account</h2>
+      <p><a href="{% url 'home' %}" title="Home">Home</a> <i class="ti-angle-double-right"></i> SignUp</p>
+    </div>
+  </div>
+</div>
+<!-- ======================= End Page Title ===================== --> 
+
+<!-- ====================== Start Signup Form ============= -->
+<section class="padd-top-80 padd-bot-80">
+  <div class="container">
+      <div class="log-box">
+        {% if user_registration_form.errors %}
+          {% for field in user_registration_form %}
+            {% for error in field.errors %}
+              <div class="alert alert-warning alert-dismissible show" role="alert">
+                <strong>{{field.label}}: {{ error|escape }}</strong>
+                <button type="button" class="close" data-dismiss="alert">
+                <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+            {% endfor %}
+          {% endfor %}
+          {% for error in user_registration_form.non_field_errors %}
+            <div class="alert alert-warning alert-dismissible show" role="alert">
+              <strong>{{field.label}}: {{ error|escape }}</strong>
+              <button type="button" class="close" data-dismiss="alert">
+              <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+          {% endfor %}
+        {% endif %}
+        
+        <form class="log-form" method="post">
+          {% csrf_token %}
+          <div class="col-md-6">
+            <div class="form-group">
+              <label>User Name</label>
+              <input type="text" class="form-control" name="username" placeholder="User Name">
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="form-group">
+              <label>Email</label>
+              <input type="email" class="form-control" name="email" required placeholder="Email">
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="form-group">
+              <label>First Name</label>
+              <input type="text" class="form-control" name="first_name" placeholder="First Name">
+            </div>
+          </div>
+          <div class="col-md-6">
+            <label>User Type</label>
+            <select class="wide form-control" name="user_type">
+              <option value="applicant">Applicant</option>
+              <option value="recruiter">Recruiter</option>
+            </select>
+          </div>
+          <div class="col-md-6">
+            <div class="form-group">
+              <label>Password</label>
+              <input type="password" class="form-control" name="password1" placeholder="********">
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="form-group">
+              <label>Confirm Password</label>
+              <input type="password" class="form-control" name="password2" placeholder="********">
+            </div>
+          </div>
+          <div class="col-md-12">
+            <div class="form-group">
+              <p class="fl-right">Already Have An account? <a href="{% url 'login' %}" title="Forget">click here</a></p>  
+			      </div>
+          </div>         
+          <div class="col-md-12">
+            <div class="form-group text-center mrg-top-15">
+              <button type="submit" class="btn theme-btn btn-m full-width">Sign Up</button>
+            </div>
+          </div>
+			    <div class="clearfix"></div>	
+        </form>
+      </div>
+  </div>
+</section>
+<!-- ====================== End Signup Form ============= --> 
+
+<section class="newsletter theme-bg" style="background-image:url(assets/img/bg-new.png)">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-8 col-md-offset-2">
+        <div class="heading light">
+          <h2>Subscribe Our Newsletter!</h2>
+          <p>Lorem Ipsum is simply dummy text printing and type setting industry Lorem Ipsum been industry standard dummy text ever since when unknown printer took a galley.</p>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-6 col-sm-6 col-md-offset-3 col-sm-offset-3">
+        <div class="newsletter-box text-center">
+          <div class="input-group"> <span class="input-group-addon"><span class="ti-email theme-cl"></span></span>
+            <input type="text" class="form-control" placeholder="Enter your Email...">
+          </div>
+          <button type="button" class="btn theme-btn btn-radius btn-m">Subscribe</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= footer start ========================= -->
+<footer class="footer">
+  <div class="container"> 
+    <div class="row">
+      <div class="col-md-12">
+        <div class="copyright text-center">
+          <p>Copyright © 2021 All Rights Reserved.</p>		  
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<div><a href="#" class="scrollup">Scroll</a></div>
+
+<!-- Jquery js--> 
+<script src="{% static 'assets/js/jquery.min.js' %}"></script> 
+<script src="{% static 'assets/plugins/bootstrap/js/bootstrap.min.js' %}"></script> 
+<script src="{% static 'assets/plugins/bootstrap/js/bootsnav.js' %}"></script> 
+<script src="{% static 'assets/js/viewportchecker.js' %}"></script> 
+<script src="{% static 'assets/js/slick.js' %}"></script> 
+<script src="{% static 'assets/plugins/bootstrap/js/wysihtml5-0.3.0.js' %}"></script> 
+<script src="{% static 'assets/plugins/bootstrap/js/bootstrap-wysihtml5.js' %}"></script> 
+<script src="{% static 'assets/plugins/aos-master/aos.js' %}"></script> 
+<script src="{% static 'assets/plugins/nice-select/js/jquery.nice-select.min.js' %}"></script> 
+<script src="{% static 'assets/js/custom.js' %}"></script> 
+<script>
+	$(window).load(function() {
+	  $(".page_preloader").fadeOut("slow");;
+	});	
+	AOS.init();
+</script>
+</body>
+</html>

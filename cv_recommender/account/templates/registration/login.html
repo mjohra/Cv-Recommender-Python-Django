@@ -1,0 +1,167 @@
+{% load static %}
+<!DOCTYPE html>
+<html class="no-js" lang="zxx">
+<head>
+<meta name="author" content="">
+<meta name="description" content="">
+<meta http-equiv="Content-Type"content="text/html;charset=UTF-8"/>
+<meta name="viewport"content="width=device-width, initial-scale=1.0">
+<title>:: CV Bachai ::</title>
+
+<!-- Favicon Icon -->
+<link rel="shortcut icon" href="{% static 'assets/img/favicon.png' %}" />
+
+<!-- CSS -->
+<link rel="stylesheet" href="{% static 'assets/plugins/bootstrap/css/bootstrap.min.css' %}">
+<link href="{% static 'assets/plugins/bootstrap/css/bootsnav.css' %}" rel="stylesheet">
+<link href="{% static 'assets/plugins/icons/css/icons.css' %}" rel="stylesheet">
+<link href="{% static 'assets/plugins/bootstrap/css/bootstrap-wysihtml5.css' %}" rel="stylesheet" type="text/css">
+<link href="{% static 'assets/plugins/animate/animate.css' %}" rel="stylesheet">
+<link href="{% static 'assets/plugins/nice-select/css/nice-select.css' %}" rel="stylesheet">
+<link href="{% static 'assets/plugins/date-dropper/datedropper.css' %}" rel="stylesheet">
+<link href="{% static 'assets/plugins/aos-master/aos.css' %}" rel="stylesheet">
+<link href="{% static 'assets/css/style.css' %}" rel="stylesheet">
+<link href="{% static 'assets/css/responsive.css' %}" rel="stylesheet">
+<!-- Google Fonts -->
+<link href="https://fonts.googleapis.com/css?family=Montserrat:300,400,500,600,700&display=swap" rel="stylesheet"> 
+<link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600&display=swap" rel="stylesheet"> 
+</head>
+<body class="utf_skin_area">
+<div class="page_preloader"></div>
+
+<!-- ======================= Start Navigation ===================== -->
+<nav class="navbar navbar-default navbar-mobile navbar-fixed light bootsnav">
+  <div class="container">     
+    <div class="navbar-header">
+      <a class="navbar-brand" href="{% url 'home' %}"> <img src="{% static 'assets/img/logo-light.png' %}" class="logo logo-display" alt=""> <img src="{% static 'assets/img/logo.png' %}" class="logo logo-scrolled" alt=""> </a>
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-menu"> <i class="fa fa-bars"></i> </button> 
+	  </div>    
+    <div class="collapse navbar-collapse" id="navbar-menu">
+      <ul class="nav navbar-nav navbar-right">
+        <li class="sign-up"><a class="btn-signup red-btn" href="{% url 'register' %}"><span class="ti-briefcase"></span>Register</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+<!-- ======================= End Navigation ===================== --> 
+
+<!-- ======================= Start Page Title ===================== -->
+<div class="page-title">
+  <div class="container">
+    <div class="page-caption">
+      <h2>Create an Account</h2>
+      <p><a href="{% url 'home' %}" title="Home">Home</a> <i class="ti-angle-double-right"></i> LogIn</p>
+    </div>
+  </div>
+</div>
+<!-- ======================= End Page Title ===================== --> 
+
+<!-- ====================== Start login Form ============= -->
+<section class="padd-top-80 padd-bot-80">
+  <div class="container">
+      <div class="log-box">
+        <ul class="nav nav-tabs nav-advance theme-bg" role="tablist">
+          <li class="nav-item active"> <a class="nav-link" data-toggle="tab" href="#employer" role="tab"> <i class="ti-user"></i> Job Seeker</a> </li>
+          <li class="nav-item"> <a class="nav-link" data-toggle="tab" href="#candidate" role="tab"> <i class="ti-user"></i> Job Provider</a> </li>
+        </ul>
+
+        {% for message in messages %}
+          <div class="alert alert-warning alert-dismissible show" role="alert">
+            <strong>{{message}}</strong>
+            <button type="button" class="close" data-dismiss="alert">
+            <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+        {% endfor %}
+        <div class="tab-content"> 
+          <!-- Employer Panel 1-->
+          <div class="tab-pane fade in show active" id="employer" role="tabpanel">
+            <form method="post">
+                {% csrf_token %}
+              <div class="form-group">
+                <input type="text" name="username" class="form-control" placeholder="Username or Email Address">
+              </div>
+              <div class="form-group">
+                <input type="password" name="password" class="form-control" placeholder="Password">
+              </div>
+              <div class="form-group">
+                <a href="{% url 'register' %}" title="Forget" class="fl-left text-success">Click Here To Register</a>
+                <a href="{% url 'password_reset' %}" title="Forget" class="fl-right text-success">Forgot Password?</a>  
+			        </div>
+              <div class="form-group text-center">
+                <input type="hidden" name="next" value="{{ next }}" />
+                <button type="submit" class="btn theme-btn full-width btn-m">LogIn</button>
+              </div>
+            </form>
+			<div class="log-option"><span>OR</span></div>
+			<div class="row">
+              <div class="col-md-6"> <a href="#" title="" class="fb-log-btn log-btn"><i class="fa fa-facebook"></i> Facebook</a> </div>
+              <div class="col-md-6"> <a href="#" title="" class="gplus-log-btn log-btn"><i class="fa fa-google"></i> Google</a> </div>
+            </div>
+          </div>
+          
+          <!-- Candidate Panel 2-->
+          <div class="tab-pane fade" id="candidate" role="tabpanel">
+            <form method="post">
+                {% csrf_token %}
+              <div class="form-group">
+                <input type="text" name="username" class="form-control" placeholder="Username or Email Address">
+              </div>
+              <div class="form-group">
+                <input type="password" name="password" class="form-control" placeholder="Password">
+              </div>
+              <div class="form-group">
+                <a href="{% url 'register' %}" title="Forget" class="fl-left text-success">Click Here To Register</a>
+                <a href="{% url 'password_reset' %}" title="Forget" class="fl-right text-success">Forgot Password?</a>  
+			        </div>
+              <div class="form-group text-center">
+                <button type="submit" class="btn theme-btn full-width btn-m">LogIn</button>
+              </div>
+              <div class="clearfix"></div>
+            </form>
+			<div class="log-option"><span>OR</span></div>
+			<div class="row">
+              <div class="col-md-6"> <a href="#" title="" class="fb-log-btn log-btn"><i class="fa fa-facebook"></i> Facebook</a> </div>
+              <div class="col-md-6"> <a href="#" title="" class="gplus-log-btn log-btn"><i class="fa fa-google"></i> Google</a> </div>
+            </div>
+          </div>
+        </div>
+      </div>
+  </div>
+</section>
+<!-- ====================== End login Form ============= --> 
+
+<!-- ================= footer start ========================= -->
+<footer class="footer">
+  <div class="container"> 
+    <div class="row">
+      <div class="col-md-12">
+        <div class="copyright text-center">
+          <p>Copyright © 2021 All Rights Reserved.</p>		  
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<div><a href="#" class="scrollup">Scroll</a></div>
+
+<!-- Jquery js--> 
+<script src="{% static 'assets/js/jquery.min.js' %}"></script> 
+<script src="{% static 'assets/plugins/bootstrap/js/bootstrap.min.js' %}"></script> 
+<script src="{% static 'assets/plugins/bootstrap/js/bootsnav.js' %}"></script> 
+<script src="{% static 'assets/js/viewportchecker.js' %}"></script> 
+<script src="{% static 'assets/js/slick.js' %}"></script> 
+<script src="{% static 'assets/plugins/bootstrap/js/wysihtml5-0.3.0.js' %}"></script> 
+<script src="{% static 'assets/plugins/bootstrap/js/bootstrap-wysihtml5.js' %}"></script> 
+<script src="{% static 'assets/plugins/aos-master/aos.js' %}"></script> 
+<script src="{% static 'assets/plugins/nice-select/js/jquery.nice-select.min.js' %}"></script> 
+<script src="{% static 'assets/js/custom.js' %}"></script> 
+<script>
+	$(window).load(function() {
+	  $(".page_preloader").fadeOut("slow");;
+	});	
+	AOS.init();
+</script>
+</body>
+</html>
