@@ -31,38 +31,47 @@ To use or work on this project you need to **Download** or **Clone** this reposi
 
 ### To Download :
 
--   Just click on **Code**
+- Just click on **Code**
 
--   click **Download Zip**
+- click **Download Zip**
 
 ### To Clone :
 
 ```sh
-git clone https://github.com/hhhameem/CV-Recommender.git
+git clone https://github.com/mjohra/Cv-Recommender-Python-Django.git
 ```
 
 ## Make your development environment ready
 
 Now, as you have successfully downloaded this repository you need to make your development environment ready to see this project on the development server. Just follow the instructions below:
 
--   Go to the CV-Recommender folder
--   Activate the Virtual Environment
-    ```sh
-    Scripts\activate.bat
-    ```
--   Install the requirements
-    ```py
-    pip install -r requirements.txt
-    ```
--   Go to the project folder
-    ```sh
-    cd cv_recommender
-    ```
--   Activate the runserver
-    ```py
-    py manage.py runserver
-    ```
-    and now you can see this live on **localhost**.
+- Go to the Cv-Recommender-Python-Django folder
+- Activate the Virtual Environment
+  ```sh
+  Scripts\activate.bat
+  ```
+- Install the requirements
+  ```py
+  pip install -r requirements.txt
+  ```
+- Go to the project folder
+  ```sh
+  cd cv_recommender
+  ```
+- Now in the **custom_decorators** folder include a file named **email_credential.py** and in that file
+  declare two variables named **my_mail** & **my_pass** and assign your mail and pass to those variable.
+
+  or
+
+  Go to **cv_recommender** and then open **settings.py** and **remove** line no **14** and in line number **136** include your **e-mail** and in line number **137** include your **password**. Both email and password needs to be enclosed with **quotation** mark.
+
+- Activate the runserver
+
+  ```py
+  py manage.py runserver
+  ```
+
+  and now you can see this live on **localhost**.
 
 ## Deployment
 
@@ -74,20 +83,20 @@ As you have successfully made the development environment ready you can now test
 
 # Built With
 
--   [HTML](https://en.wikipedia.org/wiki/HTML) - Markup Language
--   [CSS](https://en.wikipedia.org/wiki/CSS) - For Styling the markup
--   [Javascript](https://www.javascript.com/) - For adding Interactivity
--   [Django](https://www.djangoproject.com/) - For Backend
--   [SQLite](https://www.sqlite.org/index.html) - For Database
--   [Python](https://www.python.org/) - For Scripting
+- [HTML](https://en.wikipedia.org/wiki/HTML) - Markup Language
+- [CSS](https://en.wikipedia.org/wiki/CSS) - For Styling the markup
+- [Javascript](https://www.javascript.com/) - For adding Interactivity
+- [Django](https://www.djangoproject.com/) - For Backend
+- [SQLite](https://www.sqlite.org/index.html) - For Database
+- [Python](https://www.python.org/) - For Scripting
 
 # Team Members
 
--   [Mehjabin Johra](https://github.com/mjohra)
--   [Mohammad Farhan](https://github.com/farhanm9)
--   Md. Al Moktadir Chowdhury
--   Mostahid Ahmed
--   A. M. Kabbo Hossain
+- [Hebron Hossain Hamim](https://github.com/hhhameem)
+- [Mohammad Farhan](https://github.com/farhanm9)
+- Md. Al Moktadir Chowdhury
+- Mostahid Ahmed
+- A. M. Kabbo Hossain
 
 # Contributing
 
@@ -109,9 +118,9 @@ This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md
 
 # Acknowledgements
 
--   [Template](https://themeforest.net/item/jobhit-job-portal-html-template/29922683)
--   [Dennis Ivy](https://www.youtube.com/channel/UCTZRcDjjkVajGL6wd76UnGg)
--   [Samuli Natri](https://www.youtube.com/channel/UC_F-PRC-SXbaGj_kmMZSotA)
--   [PurpleBooth](https://gist.github.com/PurpleBooth/109311bb0361f32d87a2)
--   [othneildrew](https://github.com/othneildrew/Best-README-Template/blob/master/README.md)
--   and a lot of unknown resources
+- [Template](https://themeforest.net/item/jobhit-job-portal-html-template/29922683)
+- [Dennis Ivy](https://www.youtube.com/channel/UCTZRcDjjkVajGL6wd76UnGg)
+- [Samuli Natri](https://www.youtube.com/channel/UC_F-PRC-SXbaGj_kmMZSotA)
+- [PurpleBooth](https://gist.github.com/PurpleBooth/109311bb0361f32d87a2)
+- [othneildrew](https://github.com/othneildrew/Best-README-Template/blob/master/README.md)
+- and a lot of unknown resources
